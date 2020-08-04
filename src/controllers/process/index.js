@@ -92,7 +92,7 @@ export default class ProcessController {
 
     logger.info('Starting elastalert with arguments ' + (startArguments.join(' ') || '[none]'));
 
-    this._process = spawn('python', ['-m', 'elastalert.elastalert'].concat(startArguments), {
+    this._process = spawn('python3', ['-m', 'elastalert.elastalert'].concat(startArguments), {
       cwd: this._elastalertPath
     });
 
