@@ -9,7 +9,12 @@ export default function ruleDeleteHandler(request, response) {
    */
   let server = request.app.get('server');
 
-  server.rulesController.rule(request.params.id)
+  let user = request.get('user-id');
+  let project = request.get('project');
+  let path = project+'/'+user+'/'+request.params.id
+
+
+  server.rulesController.rule(path)
     .then(function (rule) {
       rule.delete()
         .then(function (rule) {

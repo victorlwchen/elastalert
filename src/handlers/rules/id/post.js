@@ -1,6 +1,6 @@
+import {join as joinPath} from 'path';
 import RouteLogger from '../../../routes/route_logger';
 import {sendRequestError} from '../../../common/errors/utils';
-
 let logger = new RouteLogger('/rules/:id', 'POST');
 
 export default function rulePostHandler(request, response) {
@@ -9,8 +9,12 @@ export default function rulePostHandler(request, response) {
    */
   let server = request.app.get('server');
   let body = request.body ? request.body.yaml : undefined;
-
-  server.rulesController.rule(request.params.id)
+  let user = request.get('user-id');
+  let project = request.get('project');
+  let path = project+'/'+user+'/'+request.params.id
+  const dirPath = joinPath(server.rulesController.rulesFolder, project+'/'+user);
+  server.rulesController._fileSystemController.createDirectoryIfNotExists(dirPath).then(function (){
+  server.rulesController.rule(path)
     .then(function (rule) {
       rule.edit(body)
         .then(function () {
@@ -27,7 +31,7 @@ export default function rulePostHandler(request, response) {
     })
     .catch(function (error) {
       if (error.error === 'ruleNotFound') {
-        server.rulesController.createRule(request.params.id, body)
+        server.rulesController.createRule(path, body)
           .then(function () {
             logger.sendSuccessful();
             response.send({
@@ -44,4 +48,5 @@ export default function rulePostHandler(request, response) {
         sendRequestError(response, error);
       }
     });
+  })
 }
