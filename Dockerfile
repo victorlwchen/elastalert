@@ -49,4 +49,4 @@ RUN mkdir -p /opt/elastalert/rules/ /opt/elastalert/server_data/tests/ \
 USER node
 
 EXPOSE 3030
-#ENTRYPOINT ["npm", "start"]
+ENTRYPOINT ["npm", "start"]
