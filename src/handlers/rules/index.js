@@ -49,6 +49,8 @@ export default function rulesHandler(request, response) {
 
   if (userRole == 'system_admin' || userRole == 'tenant_admin' ){
     let path = project + '/';
+    const dirPath = joinPath(server.rulesController.rulesFolder, project);
+    server.rulesController._fileSystemController.createDirectoryIfNotExists(dirPath).then(function (){
     getProjectRules(server, path)
     .then(function (rules) {
       response.send(rules);
@@ -56,9 +58,12 @@ export default function rulesHandler(request, response) {
     })
     .catch(function (error) {
       sendRequestError(error);
-    });    
+    })
+  });    
   } else {
     let path = project + '/' + user + '/';
+    const dirPath = joinPath(server.rulesController.rulesFolder, project+'/'+user);
+    server.rulesController._fileSystemController.createDirectoryIfNotExists(dirPath).then(function (){
     getUserRules(server, path, user)
     .then(function (rules) {
       response.send(rules);
@@ -66,7 +71,8 @@ export default function rulesHandler(request, response) {
     })
     .catch(function (error) {
       sendRequestError(error);
-    });   
+    })
+  });   
   }
 
 }
