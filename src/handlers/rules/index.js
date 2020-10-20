@@ -1,3 +1,4 @@
+import {join as joinPath} from 'path';
 import RouteLogger from '../../routes/route_logger';
 import sendRequestError from '../../common/errors/utils';
 import Logger from 'bunyan';
@@ -58,7 +59,7 @@ export default function rulesHandler(request, response) {
     })
     .catch(function (error) {
       sendRequestError(error);
-    })
+    });
   });    
   } else {
     let path = project + '/' + user + '/';
@@ -71,7 +72,7 @@ export default function rulesHandler(request, response) {
     })
     .catch(function (error) {
       sendRequestError(error);
-    })
+    });
   });   
   }
 

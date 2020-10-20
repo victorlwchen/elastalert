@@ -48,5 +48,5 @@ export default function rulePostHandler(request, response) {
         sendRequestError(response, error);
       }
     });
-  })
+  });
 }
